@@ -72,6 +72,7 @@ function PlotPlanet(planet, days = 3, endDays = 365)
         semi_mPlanet = AstroLib.planets[planet].axis
         incPlanet = AstroLib.planets[planet].inc
     else
+        namePlanet=planet[1]
         periodPlanet = planet[2]
         eccPlanet = planet[3]
         semi_mPlanet = planet[4]
@@ -139,7 +140,7 @@ function Create_data_list(days, T, list)
 end
 
 
-function Animation(List, days = 5, maxDay = nothing)
+function Animation(List, days = 8, maxDay = nothing)
 
     if maxDay == nothing
         T = MaxT(List)
@@ -160,7 +161,7 @@ function Animation(List, days = 5, maxDay = nothing)
             foreground_color_legend = nothing,
             background_color_legend = nothing, xlabel="x")
                                                                                    #  Bedzie trzeba zmienic
-        scatter!([0],[0],[0],markersize = 20,
+        scatter!([0],[0],[0],markersize = 15,
             markercolor = :yellow, alpha=0.5,
             label="Sun")
 
@@ -172,5 +173,5 @@ function Animation(List, days = 5, maxDay = nothing)
     gif(anim, "anim_fps15.gif", fps = 15)
 
 end
-Animation(("mars","earth","jupiter"),3,100)
-AstroLib.planets["jupiter"]
+Animation(("mars","neptune"),4,100)
+AstroLib.planets["neptune"]
