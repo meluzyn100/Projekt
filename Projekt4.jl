@@ -223,6 +223,7 @@ function Animation(List, days = 8, maxDay = nothing,                            
             background_color_legend = nothing, xlabel="x",
             ylabel="y", zlabel="z", title = "Planetar system",
             legendfontsize = 14, titlefontsize = 20,
+<<<<<<< HEAD
             xtickfontsize = 12, ytickfontsize = 12, ztickfontsize = 12,
             size = (1440, 900),legendtitle = "$(i*days) day")
 
@@ -234,6 +235,19 @@ function Animation(List, days = 8, maxDay = nothing,                            
             for k in 1:length(List)                                                 # Jeżeli tak tworzymy ich wykresy 
                 r = planet_R_list[k]
                 plot!([r.*xs_3D[k]], [r.*ys_3D[k]], [r.*zs_3D[k]], label = nothing)
+=======
+            xtickfontsize=12,ytickfontsize=12,ztickfontsize=12,
+            size = (1440, 900),legendtitle="$(i*days) day", legendtitlefontsize = 14)
+                                                                                   #  Bedzie trzeba zmienic
+            scatter!([0],[0],[0],markersize = 20,
+                    markercolor = :yellow, alpha=0.5,
+                    label="Sun")
+            if elips
+                for k in 1:length(List)
+                    r=planet_R_list[k]
+                    plot!([r.*xs_3D[k]],[r.*ys_3D[k]],[r.*zs_3D[k]], label = nothing)
+                end
+>>>>>>> 6b6fc2202a01bad62be12117a2134229a2f2e46c
             end
         end
 
