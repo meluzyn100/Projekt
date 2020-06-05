@@ -21,12 +21,12 @@ sr = 6.96340*10^8
 
 allr = r.(a,e,theta)
 # scatter(theta,r.(a,e,theta),proj=:polar)
-scatter(xlims=(-ra,ra),ylims=(-ra,ra),zlims=(-ra,ra),leg=false,aspect_ratio=:equal)
+plot(xlims=(-ra,ra),ylims=(-ra,ra),zlims=(-ra,ra),leg=false,aspect_ratio=:equal)
 scatter!([sr],[0],  markersize = 20)
 for i in 1:360
-    scatter!([allr[i]*cos(theta[i])],[allr[i]*sin(theta[i])],[0])
+    plot!([allr[i]*cos(theta[i])],[allr[i]*sin(theta[i])],[0])
     plot!()|>display
-    sleep(0.01)
+    # sleep(0.01)
 end
 
 # plot!(circle(sun,0,sr))
