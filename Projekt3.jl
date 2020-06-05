@@ -169,12 +169,12 @@ function Animation(List, days = 8, maxDay = nothing)
             foreground_color_legend = nothing,
             background_color_legend = nothing, xlabel="x")
                                                                                    #  Bedzie trzeba zmienic
-        scatter!([0],[0],[0],markersize = 15,
+        scatter!([0],[0],[0],markersize = 4,
             markercolor = :yellow, alpha=0.5,
             label="Sun")
             for k in 1:length(List)
-                r=planet_R_list[k][i]
-                plot!([r*xs_3D[k]],[r*ys_3D[k]],[r*zs_3D[k]])
+                r=planet_R_list[k]
+                plot!([r.*xs_3D[k]],[r.*ys_3D[k]],[r.*zs_3D[k]], label = nothing)
             end    
             
             for j in 1:length(List)
