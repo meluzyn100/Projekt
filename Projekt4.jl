@@ -158,7 +158,7 @@ function Name(name)
     end
 end
 
-function Animation(List, days = 8, maxDay = nothing)
+function Animation(List, days = 10, maxDay = nothing,elips=true)
     List = lowercase.(List)
 
     if maxDay == nothing
@@ -179,17 +179,20 @@ function Animation(List, days = 8, maxDay = nothing)
             ylim = (-R,R), zlim = (-R,R),
             foreground_color_legend = nothing,
             background_color_legend = nothing, xlabel="x",
-            size = (1280, 720))
+            ylabel="y", zlabel="z", title = "Układ planetarny",
+            legendfontsize = 14, titlefontsize = 20,
+            xtickfontsize=12,ytickfontsize=12,ztickfontsize=12,
+            size = (1440, 900),legendtitle="$(i*days) day")
                                                                                    #  Bedzie trzeba zmienic
             scatter!([0],[0],[0],markersize = 20,
                     markercolor = :yellow, alpha=0.5,
                     label="Sun")
-
-            for k in 1:length(List)
-                r=planet_R_list[k]
-                plot!([r.*xs_3D[k]],[r.*ys_3D[k]],[r.*zs_3D[k]], label = nothing)
+            if elips
+                for k in 1:length(List)
+                    r=planet_R_list[k]
+                    plot!([r.*xs_3D[k]],[r.*ys_3D[k]],[r.*zs_3D[k]], label = nothing)
+                end
             end
-
 
             for j in 1:length(List)
                 r=planet_R_list[j][i]
@@ -199,3 +202,4 @@ function Animation(List, days = 8, maxDay = nothing)
     gif(anim, "anim_SolarSystem.gif", fps = 15)
 
 end
+Animation(["venus","earth"],10,400,true)
