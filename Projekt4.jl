@@ -204,12 +204,6 @@ function Animation(List, days = 8, maxDay = nothing, directory = "SolarSystem", 
 
     R = MaxR(List)                                                                  # Wyznaczamy maksymalną półoś wielką
 
-    if directory == nothing                                                         # Sprawdzamy czy użytkownik wpisał nazwe gifu
-        directory = "SolarSystem.gif"                                               # Jeśli nie wybieramy domyślnie SolarSystem.gif
-    else
-        directory = directory                                                       # Jeśli nie, wybieramy jego opcje
-    end
-
     data_list = CreateDataList(days,T,List)                                         # Wywołujemy funkcję CreateDataList
     planet_R_list =data_list[1]                                                     # Zapisujemy odpowiednie wywołania w zmiennych
     xs_3D=data_list[2]
@@ -247,4 +241,4 @@ function Animation(List, days = 8, maxDay = nothing, directory = "SolarSystem", 
     gif(anim, "$directory.gif", fps = 15)                                               # Zapisujemy animacje (domyślnie 15 fps)
 end
 
-Animation(["earth", "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], 6, 365,"System", false)
+Animation(["earth", "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], 6, 366)
