@@ -128,6 +128,14 @@ function MaxR(Planets)                               # Funkcja zwracająca max R
 end
 
 function Create_data_list(days, T, list)
+    """
+    Zwróć liste odlegosci,współzednych x, współzednych y, współzednych z
+    w zaleznosci od dnia
+
+    days - Co ile dni ma byc zwracana wartosc
+    T - Ostati dzień
+    list - lista planet dla ktorych maja byc zwrucone wartosci
+    """
     r_list=[]
     x_list=[]
     y_list=[]
@@ -148,7 +156,7 @@ function Name(name)
     else
         return name[1]
     end
-end            
+end
 
 function Animation(List, days = 8, maxDay = nothing)
     List = lowercase.(List)
@@ -176,13 +184,13 @@ function Animation(List, days = 8, maxDay = nothing)
             scatter!([0],[0],[0],markersize = 20,
                     markercolor = :yellow, alpha=0.5,
                     label="Sun")
-            
+
             for k in 1:length(List)
                 r=planet_R_list[k]
                 plot!([r.*xs_3D[k]],[r.*ys_3D[k]],[r.*zs_3D[k]], label = nothing)
             end
-                   
-            
+
+
             for j in 1:length(List)
                 r=planet_R_list[j][i]
                 scatter!([r*xs_3D[j][i]],[r*ys_3D[j][i]],[r*zs_3D[j][i]],label= uppercasefirst(Name(List[j])), markersize = 7 )
