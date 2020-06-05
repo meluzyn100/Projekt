@@ -174,4 +174,3 @@ function Animation(List, days = 8, maxDay = nothing)
 
 end
 Animation(("mars","neptune"),4,100)
-AstroLib.planets["neptune"]
