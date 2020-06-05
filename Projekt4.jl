@@ -151,7 +151,12 @@ function Name(name)
 end            
 
 function Animation(List, days = 8, maxDay = nothing)
-    List = lowercase.(List)
+    for k in List
+        if typeof(k) == String
+            replace(List, k => lowercase(k))
+        end
+    end           
+
 
     if maxDay == nothing
         T = MaxT(List)
@@ -171,9 +176,9 @@ function Animation(List, days = 8, maxDay = nothing)
             ylim = (-R,R), zlim = (-R,R),
             foreground_color_legend = nothing,
             background_color_legend = nothing, xlabel="x",
-            size = (1280, 720))
-                                                                                   #  Bedzie trzeba zmienic
-            scatter!([0],[0],[0],markersize = 20,
+            size = (800, 800))
+
+            scatter!([0],[0],[0],markersize = 15,
                     markercolor = :yellow, alpha=0.5,
                     label="Sun")
             
