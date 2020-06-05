@@ -173,15 +173,15 @@ end
 
 
 function Animation(List, days = 8, maxDay = nothing, directory = "SolarSystem",                                # Funkcja generująca animacje obiegu planet
-                   elips = true )
+                   fps = 15, elips = true )
     """
     Funkcja tworząca animacje wybranych planet układu Słonecznego.
     Aby działała poprwnie należy podać jej listę z nazwami wybranych
     planet z układu słonecznego. Pozwola ona równierz na tworzenie własnych
     orbitali. Należy podać typlę z odpowiednimi argumentami:
-    ("nazwa planety", okres obiegu wokół słońca, zakrzywienie elipsy, półoś wielka elipsy, i kąt nachylenia elipsy)
+    ("nazwa planety", okres obiegu wokół słońca, zakrzywienie elipsy(mimośród), półoś wielka elipsy, i kąt nachylenia elipsy)
     Przykładowym wywołanie tej funkcji jest np.
-    Animation(["earth", "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], 6, 365,"System", false)
+    Animation(["earth", "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], 6, 365, "System", 15, false)
 
     List - lista planet
     days - co ile dni mierzymy pozycje planety (opcionalne, domyślnie 8)
@@ -211,7 +211,7 @@ function Animation(List, days = 8, maxDay = nothing, directory = "SolarSystem", 
     zs_3D=data_list[4]
 
     anim = @animate for i in 1:Int(floor(T/days))                                   # Generujemy animacje. Okres z funkcji MaxT(Planets) przyda sie tutaj do proponowania dnia kończącego animacje
-        plot(aspect_ratio = :equal, xlim = (-R,R),                                   # Tworzymy tło
+        plot(aspect_ratio = :equal, xlim = (-R,R),                                  # Tworzymy tło
             ylim = (-R,R), zlim = (-R,R),                                           # Dzięki funkcji MaxR(Planets) wykorzystaliśmy promień najbardziej oddalonej planety do ograniczenia przestrzeni
             foreground_color_legend = nothing,                                      # Dalej dopracowywujemy odpowiednie parametry tła
             background_color_legend = nothing, xlabel="x",
@@ -238,7 +238,7 @@ function Animation(List, days = 8, maxDay = nothing, directory = "SolarSystem", 
             label= uppercasefirst(Name(List[j])), markersize = 7 )                  # Nadajemy im nazwy w legendzie i wybieramy wielkość znaczników
         end
     end
-    gif(anim, "$directory.gif", fps = 15)                                               # Zapisujemy animacje (domyślnie 15 fps)
+    gif(anim, "$directory.gif", fps = fps)                                               # Zapisujemy animacje (domyślnie 15 fps)
 end
 
-Animation(["earth", "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], 6, 366)
+Animation(["earth", "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], 6, 365, "System", 10, true)
