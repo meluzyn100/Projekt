@@ -182,7 +182,7 @@ function Animation(List, days = 10, maxDay = nothing,elips=true)
             ylabel="y", zlabel="z", title = "Układ planetarny",
             legendfontsize = 14, titlefontsize = 20,
             xtickfontsize=12,ytickfontsize=12,ztickfontsize=12,
-            size = (1440, 900),legendtitle="$(i*days) day")
+            size = (1440, 900),legendtitle="$(i*days) day", legendtitlefontsize = 14)
                                                                                    #  Bedzie trzeba zmienic
             scatter!([0],[0],[0],markersize = 20,
                     markercolor = :yellow, alpha=0.5,
