@@ -18,16 +18,13 @@ ra = a*(1 + e)
 
 sun = (ra -rp)/2
 sr = 6.96340*10^8
-
+kat = 90
 allr = r.(a,e,theta)
-# scatter(theta,r.(a,e,theta),proj=:polar)
-plot(xlims=(-ra,ra),ylims=(-ra,ra),zlims=(-ra,ra),leg=false,aspect_ratio=:equal)
-scatter!([sr],[0],  markersize = 20)
-for i in 1:360
-    plot!([allr[i]*cos(theta[i])],[allr[i]*sin(theta[i])],[0])
-    plot!()|>display
-    # sleep(0.01)
-end
+# scatter(theta,r.(a,e,theta),proj=:polar
+
+plot()
+plot([allr.* cos.(theta) * cos(kat)],[allr.*sin.(theta)],[-allr.* cos.(theta) * sin(kat) ])
+plot!()|>display
 
 # plot!(circle(sun,0,sr))
 # scatter!([0],[0],  markershape = :hexagon,)
