@@ -154,7 +154,7 @@ end
     T - Ostati dzień
     list - lista planet dla ktorych maja byc zwrucone wartosci
 
-""" function Creategest(days, T, list)                                          # Fukcja jest przydatna do optymalizacji programu, zamiast wywoływać funkcję DataPlanet w animacji zapisujemy jej wynik wcześniej
+""" function CreateDataList(days, T, list)                                          # Fukcja jest przydatna do optymalizacji programu, zamiast wywoływać funkcję DataPlanet w animacji zapisujemy jej wynik wcześniej
     r_list = []                                                                     # Tworzymy puste listyodpowiadające promieniom
     x_list = []                                                                     # Oraz współżednym X
     y_list = []                                                                     # Y
