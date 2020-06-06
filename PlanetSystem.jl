@@ -1,7 +1,7 @@
 module PlanetarySystem
 
 export one_day_s, get_mean_anomali_list, get_eccentric_anomali, get_theta,
-get_radius, transform_3D, DataPlanet, MaxT, MaxR, CreateDataList, Name, Animation
+get_radius, transform_3D, DataPlanet, MaxT, MaxR, CreateDataList, Name, System_Animation
 
 using AstroLib,Plots
 
@@ -59,7 +59,7 @@ end
 @doc """
     transform_3D(x,y,Theta)
     Funkcja  obraca  punkt o współrzędnych (x,y,0) wokół OY o podany kat.
-    
+
     x`= cosθ*x
     y`= y
     z = -sinθ*x
@@ -186,7 +186,7 @@ end
 
 
 @doc """
-    Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem", fps = 15, elips = true)
+    System_Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem", fps = 15, elips = true)
 
     Funkcja tworząca animacje wybranych planet układu Słonecznego.
     Aby działała poprwnie należy podać jej listę z nazwami wybranych
@@ -194,7 +194,7 @@ end
     orbitali. Należy podać typlę z odpowiednimi argumentami:
     ("nazwa planety", okres obiegu wokół słońca, zakrzywienie elipsy (mimośród), półoś wielka elipsy, i kąt nachylenia elipsy)
     Przykładowym wywołanie tej funkcji jest np.
-    Animation(["earth", "venus",  "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], days = 4, maxDay = 366, directory = "System", fps = 15, elips = true).
+    System_Animation(["earth", "venus",  "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], days = 4, maxDay = 366, directory = "System", fps = 15, elips = true).
     Funkcja wykorzystuje keywords, pozwala to na wybrane dowolnego argumentu opcionalnego bez potrzeby wbisywania
     wszystkich poprzednich (np. fps = 30)
 
@@ -205,7 +205,7 @@ end
     fps - ilość klatek na sekundę animacji
     elips -  decyduje czy funkcja będzie rysować tor ruchu planet (opcionalne, domyślnie true)
 
-""" function Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem",
+""" function System_Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem",
                    fps = 15, elips = true)                                          # Funkcja generująca animacje obiegu planet
     for k in List                                                                   # Jeżeli użytkownik poda nazwe planety z wielkiej litery to program nie zadziała
         if typeof(k) == String                                                      # Więc każdą kolejną nazwę
