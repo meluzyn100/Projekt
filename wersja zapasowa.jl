@@ -65,8 +65,10 @@ end
 #--------------------Testowe rysowane wykresu jednej plaentu-------------------
 #ustalanie danych planety
 
-function PlotPlanet(planet, days = 3, endDays = 365)
-    if typeof(planet) == String
+function DataPlanet(planet, days = 3, endDays = 365)
+    if planet == "pluto"
+        return @error("Pluton to nie planeta  :(")
+    elseif typeof(planet) == String
         periodPlanet = AstroLib.planets[planet].period
         eccPlanet = AstroLib.planets[planet].ecc
         semi_mPlanet = AstroLib.planets[planet].axis
@@ -126,12 +128,20 @@ function MaxR(Planets)                               # Funkcja zwracająca max R
 end
 
 function Create_data_list(days, T, list)
+    """
+    Zwróć liste odlegosci,współzednych x, współzednych y, współzednych z
+    w zaleznosci od dnia
+
+    days - Co ile dni ma byc zwracana wartosc
+    T - Ostati dzień
+    list - lista planet dla ktorych maja byc zwrucone wartosci
+    """
     r_list=[]
     x_list=[]
     y_list=[]
     z_list=[]
     for i in list
-        data = PlotPlanet(i, days, T)
+        data = DataPlanet(i, days, T)
         push!(r_list,data[1])
         push!(x_list,data[2])
         push!(y_list,data[3])
@@ -148,7 +158,8 @@ function Name(name)
     end
 end
 
-function Animation(List, days = 8, maxDay = nothing)
+function Animation(List, days = 10, maxDay = nothing,elips=true)
+    List = lowercase.(List)
 
     if maxDay == nothing
         T = MaxT(List)
@@ -167,21 +178,28 @@ function Animation(List, days = 8, maxDay = nothing)
         plot(aspect_ratio = :equal,xlim = (-R,R),
             ylim = (-R,R), zlim = (-R,R),
             foreground_color_legend = nothing,
-            background_color_legend = nothing, xlabel="x")
+            background_color_legend = nothing, xlabel="x",
+            ylabel="y", zlabel="z", title = "Układ planetarny",
+            legendfontsize = 14, titlefontsize = 20,
+            xtickfontsize=12,ytickfontsize=12,ztickfontsize=12,
+            size = (1440, 900),legendtitle="$(i*days) day", legendtitlefontsize = 14)
                                                                                    #  Bedzie trzeba zmienic
-        scatter!([0],[0],[0], markersize = 7,
-            markercolor = :yellow, alpha=0.5,
-            label="Sun")
-            for k in 1:length(List)
-                r=planet_R_list[k]
-                plot!([r.*xs_3D[k]],[r.*ys_3D[k]],[r.*zs_3D[k]], label = nothing)
+            scatter!([0],[0],[0],markersize = 20,
+                    markercolor = :yellow, alpha=0.5,
+                    label="Sun")
+            if elips
+                for k in 1:length(List)
+                    r=planet_R_list[k]
+                    plot!([r.*xs_3D[k]],[r.*ys_3D[k]],[r.*zs_3D[k]], label = nothing)
+                end
             end
 
             for j in 1:length(List)
                 r=planet_R_list[j][i]
-                scatter!([r*xs_3D[j][i]],[r*ys_3D[j][i]],[r*zs_3D[j][i]],label=Name(List[j]))
+                scatter!([r*xs_3D[j][i]],[r*ys_3D[j][i]],[r*zs_3D[j][i]],label= uppercasefirst(Name(List[j])), markersize = 7 )
             end
     end
-    gif(anim, "anim_zajebista.gif", fps = 15)
+    gif(anim, "anim_SolarSystem.gif", fps = 15)
 
 end
+Animation(["venus","earth"],10,400,true)
