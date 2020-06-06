@@ -1,4 +1,4 @@
-module PlanetarSystem
+module PlanetarySystem
 
 export one_day_s, get_mean_anomali_list, get_eccentric_anomali, get_theta, 
 get_radius, transform_3D, DataPlanet, MaxT, MaxR, CreateDataList, Name, Animation
@@ -8,6 +8,8 @@ using AstroLib,Plots
 one_day_s = 86400                                                                   # Ilość sekund w jednym dniu
 
 @doc """
+    get_mean_anomali_list(Period, days = 3, endDays = 365)    
+
     Zwraca liste "średniej anomali".
 
     M = 2*π/T*t
@@ -21,6 +23,8 @@ one_day_s = 86400                                                               
 end
 
 @doc """
+    get_eccentric_anomali(M, e)
+
     Zwraca "Anomalie mimośrodową" w zaleznosci od
     dnia M (średnia anomalia) i e (mimośród).
 
@@ -31,6 +35,8 @@ end
 
 
 @doc """
+    get_theta(M, e)
+
     Zwraca kąty jakie dana planeta zatoczyła w zaleznosci
     od M (średnia anomalia) i e (mimośród)
 
@@ -40,6 +46,8 @@ end
 end
 
 @doc """
+    get_radius(theta,e,semi_majo)
+
     Zwróć odległość danej planety od gwiazdy w zaleznosci od katu,
     e (mimośród) i półosi wielkiej.
 
@@ -49,6 +57,8 @@ end
 end
 
 @doc """
+    transform_3D(x,y,Theta)
+
     Funkcja obraca elipsy wokół osi OY o podany kat.
 
     x`= cosθ
@@ -61,6 +71,8 @@ end
 
 
 @doc """
+    DataPlanet(planet, days = 3, endDays = 365)        
+
     Funkcja zwracająca listy promieni i położeń (R, x, y, z)
 
     planet - wybrana planeta
@@ -96,6 +108,8 @@ end
 
 
 @doc """
+    MaxT(Planets)  
+
     Funkcja zwracająca największy okres obiegu
 
     Planets - lista planet
@@ -113,6 +127,8 @@ end
 end                                                                                 # I przybliżamy ją do liczby całkowitej
 
 @doc """
+    MaxR(Planets)  
+
     Funkcja zwracająca największy promień
 
     Planets - lista planet
@@ -130,6 +146,8 @@ end                                                                             
 end
 
 @doc """
+    CreateDataList(days, T, list)  
+
     Zwróć liste odlegosci,współzednych x, współzednych y, współzednych z
     w zaleznosci od dnia
 
@@ -153,6 +171,8 @@ end
 end
 
 @doc """
+    Name(name)
+
     Funkcja zwracająca nazwe planety
 
     name - planeta z której wyznaczamy nazwę
@@ -167,6 +187,8 @@ end
 
 
 @doc """
+    Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem", fps = 15, elips = true)
+
     Funkcja tworząca animacje wybranych planet układu Słonecznego.
     Aby działała poprwnie należy podać jej listę z nazwami wybranych
     planet z układu słonecznego. Pozwola ona równierz na tworzenie własnych
@@ -184,8 +206,8 @@ end
     fps - ilość klatek na sekundę animacji
     elips -  decyduje czy funkcja będzie rysować tor ruchu planet (opcionalne, domyślnie true)
 
-""" function Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem", # Funkcja generująca animacje obiegu planet
-                   fps = 15, elips = true)
+""" function Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem", 
+                   fps = 15, elips = true)                                          # Funkcja generująca animacje obiegu planet
     for k in List                                                                   # Jeżeli użytkownik poda nazwe planety z wielkiej litery to program nie zadziała
         if typeof(k) == String                                                      # Więc każdą kolejną nazwę
             replace(List, k => lowercase(k))                                        # Sprowadzamy do małych liter wyłącznie
