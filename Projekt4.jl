@@ -1,10 +1,12 @@
+module PlanetarSystem
+export one_day_s, get_mean_anomali_list, get_eccentric_anomali, get_theta, 
+get_radius, transform_3D, DataPlanet, MaxT, MaxR, CreateDataList, Name, Animation
+
 using AstroLib,Dates,Plots
 
 one_day_s = 86400                                                                   # Ilość sekund w jednym dniu
 
-
-function get_mean_anomali_list(Period, days = 3, endDays = 365)
-    """
+@doc """
     Zwraca liste "średniej anomali".
 
     M = 2*π/T*t
@@ -12,64 +14,59 @@ function get_mean_anomali_list(Period, days = 3, endDays = 365)
     T - okres orbitalny(Period)
     t - moment czasu dla którego liczymy anomalię
 
-    """
+""" function get_mean_anomali_list(Period, days = 3, endDays = 365)
     data_list = [2 * π / Period * t * one_day_s for t in 1:days:endDays]
     return data_list
 end
 
-function get_eccentric_anomali(M, e)
-    """
+@doc """
     Zwraca "Anomalie mimośrodową" w zaleznosci od
     dnia M (średnia anomalia) i e (mimośród).
 
-    """
+""" function get_eccentric_anomali(M, e)    
     data_list = kepler_solver.(M, e)
     return data_list
 end
 
 
-function get_theta(M, e)
-    """
+@doc """
     Zwraca kąty jakie dana planeta zatoczyła w zaleznosci
     od M (średnia anomalia) i e (mimośród)
 
-    """
+""" function get_theta(M, e)
      data_list = mod2pi.(trueanom.(M, e))
      return data_list
 end
 
-function get_radius(theta,e,semi_majo)
-    """
+@doc """
     Zwróć odległość danej planety od gwiazdy w zaleznosci od katu,
     e (mimośród) i półosi wielkiej.
 
-    """
+""" function get_radius(theta,e,semi_majo)
     r=@. semi_majo*(1-e^2)/(1+e*cos(theta))
     return r
 end
 
-function transform_3D(x,y,Theta)
-    """
+@doc """
     Funkcja obraca elipsy wokół osi OY o podany kat.
 
     x`= cosθ
     y`= y
     z = -sinθ
 
-    """
+""" function transform_3D(x,y,Theta)
     return x*cos(Theta),y,-x*sin(Theta)
 end
 
 
-function DataPlanet(planet, days = 3, endDays = 365)                                # Funkcja przygotowująca planety do animowania
-    """
+@doc """
     Funkcja zwracająca listy promieni i położeń (R, x, y, z)
 
     planet - wybrana planeta
     days - co ile dni są liczone dane
     endDays - dzień do którego liczone są dane
 
-    """
+""" function DataPlanet(planet, days = 3, endDays = 365)                            # Funkcja przygotowująca planety do animowania
     if planet == "pluto"                                                            # Od 2006r Pluton to nie planeta, jednak AstroLib pozwala na kożystanie z jego danych
         return @error("Pluton to nie planeta  :(")                                  # Jednak jego promień jest tak duży, że animacje generują sie bardzo długo
     elseif typeof(planet) == String                                                 # Użydkownik może wpisać nazwe planety z Układu Słonecznego np. "earth"
@@ -97,13 +94,12 @@ function DataPlanet(planet, days = 3, endDays = 365)                            
 end
 
 
-function MaxT(Planets)                                                              # Ta funkcja będzie potrzebna do proponowania długości animacji
-    """
+@doc """
     Funkcja zwracająca największy okres obiegu
 
     Planets - lista planet
 
-    """
+""" function MaxT(Planets)                                                          # Ta funkcja będzie potrzebna do proponowania długości animacji
     Tmax = []                                                                       # Tworzymy pustą listę
     for i in Planets                                                                # Dla każdej planety z listy
         if typeof(i) == String                                                      # Jeżeli element jest nazwą np. "Jupiter"
@@ -115,13 +111,12 @@ function MaxT(Planets)                                                          
     return floor(maximum(Tmax)/one_day_s)                                           # Wybieramy największą wartość, dzielimy prze ilość sekung by otrzymać wynik w dniach
 end                                                                                 # I przybliżamy ją do liczby całkowitej
 
-function MaxR(Planets)                                                              # Funkcja przyda sie do wyznaczenia przdziałów animacji
-    """
+@doc """
     Funkcja zwracająca największy promień
 
     Planets - lista planet
 
-    """
+""" function MaxR(Planets)                                                          # Funkcja przyda sie do wyznaczenia przdziałów animacji
     Rmax = []                                                                       # Funkcja działa podobnie do powyższej
     for i in Planets
         if typeof(i) == String
@@ -133,8 +128,7 @@ function MaxR(Planets)                                                          
     return maximum(Rmax)                                                            # Ponownie wybieramy największą
 end
 
-function CreateDataList(days, T, list)                                              # Fukcja jest przydatna do optymalizacji programu, zamiast wywoływać funkcję DataPlanet w animacji zapisujemy jej wynik wcześniej
-    """
+@doc """
     Zwróć liste odlegosci,współzednych x, współzednych y, współzednych z
     w zaleznosci od dnia
 
@@ -142,11 +136,11 @@ function CreateDataList(days, T, list)                                          
     T - Ostati dzień
     list - lista planet dla ktorych maja byc zwrucone wartosci
 
-    """
-    r_list = []                                                                       # Tworzymy puste listyodpowiadające promieniom
-    x_list = []                                                                       # Oraz współżednym X
-    y_list = []                                                                       # Y
-    z_list = []                                                                       # Z
+""" function CreateDataList(days, T, list)                                          # Fukcja jest przydatna do optymalizacji programu, zamiast wywoływać funkcję DataPlanet w animacji zapisujemy jej wynik wcześniej
+    r_list = []                                                                     # Tworzymy puste listyodpowiadające promieniom
+    x_list = []                                                                     # Oraz współżednym X
+    y_list = []                                                                     # Y
+    z_list = []                                                                     # Z
     for i in list                                                                   # Dla każdej planety z listy
         data = DataPlanet(i, days, T)                                               # Wywołujemy powyższą funkcję DataPlanet
         push!(r_list,data[1])                                                       # I wywołanie w odpowiednich listach
@@ -154,16 +148,15 @@ function CreateDataList(days, T, list)                                          
         push!(y_list,data[3])
         push!(z_list,data[4])
     end
-    return r_list, x_list,y_list, z_list                                              # Zwracamy te listy
+    return r_list, x_list,y_list, z_list                                            # Zwracamy te listy
 end
 
-function Name(name)                                                                 # Podczas tworzenia własnych orbitali nazwa planety nie jest bezpośrednim elementem listy planet z której będziemy korzystać
-    """
+@doc """
     Funkcja zwracająca nazwe planety
 
     name - planeta z której wyznaczamy nazwę
 
-    """
+""" function Name(name)                                                             # Podczas tworzenia własnych orbitali nazwa planety nie jest bezpośrednim elementem listy planet z której będziemy korzysta
     if typeof(name) == String                                                       # Jeżeli element est tylko nazwą
         return name                                                                 # To zwraca jego samego
     else                                                                            # Jeśli nie
@@ -172,24 +165,26 @@ function Name(name)                                                             
 end
 
 
-function Animation(List, days = 8, maxDay = nothing, directory = "SolarSystem",                                # Funkcja generująca animacje obiegu planet
-                   fps = 15, elips = true )
-    """
+@doc """
     Funkcja tworząca animacje wybranych planet układu Słonecznego.
     Aby działała poprwnie należy podać jej listę z nazwami wybranych
     planet z układu słonecznego. Pozwola ona równierz na tworzenie własnych
     orbitali. Należy podać typlę z odpowiednimi argumentami:
     ("nazwa planety", okres obiegu wokół słońca, zakrzywienie elipsy(mimośród), półoś wielka elipsy, i kąt nachylenia elipsy)
     Przykładowym wywołanie tej funkcji jest np.
-    Animation(["earth", "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], 6, 365, "System", 15, false)
+    Animation(["earth", "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], 6, 365, "System", 15, false).
+    Funkcja wykorzystuje też keywords, pozwala to na wybrane dowolnego argumentu opcionalnego bez potrzeby wbisywania 
+    wszystkich poprzednich (np. fps = 30)
 
     List - lista planet
     days - co ile dni mierzymy pozycje planety (opcionalne, domyślnie 8)
     maxDay - dzień do którego liczymy pozycję planet (opcionalne)
     directory - kierunek i nazwa animacji(opcjinalne, domyślnie "SolarSystem.gif")
+    fps - ilość klatek na sekundę animacji
     elips -  decyduje czy funkcja będzie rysować tor ruchu planet (opcionalne, domyślnie true)
 
-    """
+""" function Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem", # Funkcja generująca animacje obiegu planet
+                   fps = 15, elips = true)
     for k in List                                                                   # Jeżeli użytkownik poda nazwe planety z wielkiej litery to program nie zadziała
         if typeof(k) == String                                                      # Więc każdą kolejną nazwę
             replace(List, k => lowercase(k))                                        # Sprowadzamy do małych liter wyłącznie
@@ -204,7 +199,7 @@ function Animation(List, days = 8, maxDay = nothing, directory = "SolarSystem", 
 
     R = MaxR(List)                                                                  # Wyznaczamy maksymalną półoś wielką
 
-    data_list = CreateDataList(days,T,List)                                         # Wywołujemy funkcję CreateDataList
+    data_list = CreateDataList(days, T, List)                                       # Wywołujemy funkcję CreateDataList
     planet_R_list =data_list[1]                                                     # Zapisujemy odpowiednie wywołania w zmiennych
     xs_3D=data_list[2]
     ys_3D=data_list[3]
@@ -228,7 +223,7 @@ function Animation(List, days = 8, maxDay = nothing, directory = "SolarSystem", 
         if elips
             for k in 1:length(List)
                 r=planet_R_list[k]
-                plot!([r.*xs_3D[k]],[r.*ys_3D[k]],[r.*zs_3D[k]], label = nothing)
+                plot!([r.*xs_3D[k]], [r.*ys_3D[k]], [r.*zs_3D[k]], label = nothing)
             end
         end
 
@@ -238,7 +233,9 @@ function Animation(List, days = 8, maxDay = nothing, directory = "SolarSystem", 
             label= uppercasefirst(Name(List[j])), markersize = 7 )                  # Nadajemy im nazwy w legendzie i wybieramy wielkość znaczników
         end
     end
-    gif(anim, "$directory.gif", fps = fps)                                               # Zapisujemy animacje (domyślnie 15 fps)
+    gif(anim, "$directory.gif", fps = fps)                                          # Zapisujemy animacje (domyślnie 15 fps)
 end
 
-Animation(["earth", "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], 6, 365, "System", 10, true)
+end
+
+using Main.PlanetarSystem
