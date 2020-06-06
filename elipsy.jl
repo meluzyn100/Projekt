@@ -18,12 +18,17 @@ ra = a*(1 + e)
 
 sun = (ra -rp)/2
 sr = 6.96340*10^8
-kat = 90
+kat = 0
+kat1 = pi
 allr = r.(a,e,theta)
 # scatter(theta,r.(a,e,theta),proj=:polar
+x = allr.* cos.(theta) * cos(kat)
+y = allr.*sin.(theta)
+z = -allr.* cos.(theta) * sin(kat)
 
 plot()
-plot([allr.* cos.(theta) * cos(kat)],[allr.*sin.(theta)],[-allr.* cos.(theta) * sin(kat) ])
+plot([allr.* cos.(theta) .+ cos(kat)],[allr.*sin.(theta)],[-allr.* cos.(theta) .+ sin(kat)])
+plot!([allr.* cos.(theta) .+ cos(kat1)],[allr.*sin.(theta)],[-allr.* cos.(theta) .+ sin(kat1)])
 plot!()|>display
 
 # plot!(circle(sun,0,sr))
