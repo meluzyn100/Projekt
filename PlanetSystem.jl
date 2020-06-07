@@ -1,7 +1,7 @@
 module PlanetarySystem
 
 export one_day_s, get_mean_anomali_list, get_eccentric_anomali, get_theta,
-get_radius, transform_3D, DataPlanet, MaxT, MaxR, CreateDataList, Name, System_Animation
+get_radius, transform_3D, DataPlanet, MaxT, MaxR, CreateDataList, System_Animation
 
 using AstroLib,Plots
 
