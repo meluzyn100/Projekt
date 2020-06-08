@@ -1,14 +1,14 @@
 module PlanetarySystem
 
-export one_day_s, get_mean_anomali_list, get_eccentric_anomali, get_theta, 
-get_radius, transform_3D, DataPlanet, MaxT, MaxR, CreateDataList, Name, Animation
+export one_day_s, get_mean_anomali_list, get_eccentric_anomali, get_theta,
+get_radius, transform_3D, DataPlanet, MaxT, MaxR, CreateDataList, System_Animation
 
 using AstroLib,Plots
 
 one_day_s = 86400                                                                   # Ilość sekund w jednym dniu
 
 @doc """
-    get_mean_anomali_list(Period, days = 3, endDays = 365)    
+    get_mean_anomali_list(Period, days = 3, endDays = 365)
 
     Zwraca liste "średniej anomali".
 
@@ -28,7 +28,7 @@ end
     Zwraca "Anomalie mimośrodową" w zaleznosci od
     dnia M (średnia anomalia) i e (mimośród).
 
-""" function get_eccentric_anomali(M, e)    
+""" function get_eccentric_anomali(M, e)
     data_list = kepler_solver.(M, e)
     return data_list
 end
@@ -37,7 +37,7 @@ end
 @doc """
     get_theta(M, e)
 
-    Zwraca kąty jakie dana planeta zatoczyła w zaleznosci
+    Zwraca kąty(prawdziwa anomalia) jakie dana planeta zatoczyła w zaleznosci
     od M (średnia anomalia) i e (mimośród)
 
 """ function get_theta(M, e)
@@ -58,12 +58,11 @@ end
 
 @doc """
     transform_3D(x,y,Theta)
+    Funkcja  obraca  punkt o współrzędnych (x,y,0) wokół OY o podany kat.
 
-    Funkcja obraca elipsy wokół osi OY o podany kat.
-
-    x`= cosθ
+    x`= cosθ*x
     y`= y
-    z = -sinθ
+    z = -sinθ*x
 
 """ function transform_3D(x,y,Theta)
     return x*cos(Theta),y,-x*sin(Theta)
@@ -71,7 +70,7 @@ end
 
 
 @doc """
-    DataPlanet(planet, days = 3, endDays = 365)        
+    DataPlanet(planet, days = 3, endDays = 365)
 
     Funkcja zwracająca listy promieni i położeń (R, x, y, z)
 
@@ -108,7 +107,7 @@ end
 
 
 @doc """
-    MaxT(Planets)  
+    MaxT(Planets)
 
     Funkcja zwracająca największy okres obiegu
 
@@ -127,7 +126,7 @@ end
 end                                                                                 # I przybliżamy ją do liczby całkowitej
 
 @doc """
-    MaxR(Planets)  
+    MaxR(Planets)
 
     Funkcja zwracająca największy promień
 
@@ -146,7 +145,7 @@ end                                                                             
 end
 
 @doc """
-    CreateDataList(days, T, list)  
+    CreateDataList(days, T, list)
 
     Zwróć liste odlegosci,współzednych x, współzednych y, współzednych z
     w zaleznosci od dnia
@@ -187,7 +186,7 @@ end
 
 
 @doc """
-    Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem", fps = 15, elips = true)
+    System_Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem", fps = 15, elips = true)
 
     Funkcja tworząca animacje wybranych planet układu Słonecznego.
     Aby działała poprwnie należy podać jej listę z nazwami wybranych
@@ -195,8 +194,8 @@ end
     orbitali. Należy podać typlę z odpowiednimi argumentami:
     ("nazwa planety", okres obiegu wokół słońca, zakrzywienie elipsy (mimośród), półoś wielka elipsy, i kąt nachylenia elipsy)
     Przykładowym wywołanie tej funkcji jest np.
-    Animation(["earth", "venus",  "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], days = 4, maxDay = 366, directory = "System", fps = 15, elips = true).
-    Funkcja wykorzystuje keywords, pozwala to na wybrane dowolnego argumentu opcionalnego bez potrzeby wbisywania 
+    System_Animation(["earth", "venus",  "mercury", ("Death Star", 3.15581497635456e7, 0.00677672, 1.0820947453737917e11, 1.149691)], days = 4, maxDay = 366, directory = "System", fps = 15, elips = true).
+    Funkcja wykorzystuje keywords, pozwala to na wybrane dowolnego argumentu opcionalnego bez potrzeby wbisywania
     wszystkich poprzednich (np. fps = 30)
 
     List - lista planet
@@ -206,7 +205,7 @@ end
     fps - ilość klatek na sekundę animacji
     elips -  decyduje czy funkcja będzie rysować tor ruchu planet (opcionalne, domyślnie true)
 
-""" function Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem", 
+""" function System_Animation(List; days = 8, maxDay = nothing, directory = "SolarSystem",
                    fps = 15, elips = true)                                          # Funkcja generująca animacje obiegu planet
     for k in List                                                                   # Jeżeli użytkownik poda nazwe planety z wielkiej litery to program nie zadziała
         if typeof(k) == String                                                      # Więc każdą kolejną nazwę
