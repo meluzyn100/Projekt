@@ -10,12 +10,12 @@ one_day_s = 86400                                                               
 @doc """
     get_mean_anomali_list(Period, days = 3, endDays = 365)
 
-    Zwraca liste "średniej anomali".
+    Zwraca listę "średniej anomali".
 
     M = 2*π/T*t
     M - średnia anomalia
     T - okres orbitalny(Period)
-    t - moment czasu dla którego liczymy anomalię
+    t - moment czasu, dla którego liczymy anomalię
 
 """ function get_mean_anomali_list(Period, days = 3, endDays = 365)
     data_list = [2 * π / Period * t * one_day_s for t in 1:days:endDays]
@@ -48,7 +48,7 @@ end
 @doc """
     get_radius(theta,e,semi_majo)
 
-    Zwróć odległość danej planety od gwiazdy w zaleznosci od katu,
+    Zwróć odległość danej planety od gwiazdy w zaleznosci od kata,
     e (mimośród) i półosi wielkiej.
 
 """ function get_radius(theta,e,semi_majo)
@@ -58,7 +58,8 @@ end
 
 @doc """
     transform_3D(x,y,Theta)
-    Funkcja  obraca  punkt o współrzędnych (x,y,0) wokół OY o podany kat.
+    
+    Funkcja  obraca  punkt o współrzędnych (x,y,0) wokół OY o podany kąt.
 
     x`= cosθ*x
     y`= y
@@ -80,7 +81,7 @@ end
 
 """ function DataPlanet(planet, days = 3, endDays = 365)                            # Funkcja przygotowująca planety do animowania
     if planet == "pluto"                                                            # Od 2006r Pluton to nie planeta, jednak AstroLib pozwala na kożystanie z jego danych
-        return @error("Pluton to nie planeta  :(")                                  # Jednak jego promień jest tak duży, że animacje generują sie bardzo długo
+        return @error("Pluton to nie planeta  :(")                                  # Natomiast jego promień jest tak duży, że animacje generują sie zbyt długo
     elseif typeof(planet) == String                                                 # Użydkownik może wpisać nazwe planety z Układu Słonecznego np. "earth"
         periodPlanet = AstroLib.planets[planet].period                              # Biblioteka AstroLib pozwoli zwrócić jego: okres obiegu,
         eccPlanet = AstroLib.planets[planet].ecc                                    # Zakrzywienie elipsy,
@@ -133,7 +134,7 @@ end                                                                             
     Planets - lista planet
 
 """ function MaxR(Planets)                                                          # Funkcja przyda sie do wyznaczenia przdziałów animacji
-    Rmax = []                                                                       # Funkcja działa podobnie do powyższej
+    Rmax = []                                                                       # Działa podobnie do powyższej
     for i in Planets
         if typeof(i) == String
             push!(Rmax, AstroLib.planets[i].axis)                                   # Jednak zwraca półosie wielkie planet
@@ -147,12 +148,12 @@ end
 @doc """
     CreateDataList(days, T, list)
 
-    Zwróć liste odlegosci,współzednych x, współzednych y, współzednych z
+    Zwróci liste odlegosci,współzednych x, współzednych y, współzednych z
     w zaleznosci od dnia
 
-    days - Co ile dni ma byc zwracana wartosc
+    days - Co ile dni ma byc zwracana wartość
     T - Ostati dzień
-    list - lista planet dla ktorych maja byc zwrucone wartosci
+    list - lista planet dla ktorych maja być zwrócone wartosci
 
 """ function CreateDataList(days, T, list)                                          # Fukcja jest przydatna do optymalizacji programu, zamiast wywoływać funkcję DataPlanet w animacji zapisujemy jej wynik wcześniej
     r_list = []                                                                     # Tworzymy puste listyodpowiadające promieniom
@@ -172,12 +173,12 @@ end
 @doc """
     Name(name)
 
-    Funkcja zwracająca nazwe planety
+    Funkcja zwracająca nazwę planety
 
     name - planeta z której wyznaczamy nazwę
 
 """ function Name(name)                                                             # Podczas tworzenia własnych orbitali nazwa planety nie jest bezpośrednim elementem listy planet z której będziemy korzysta
-    if typeof(name) == String                                                       # Jeżeli element est tylko nazwą
+    if typeof(name) == String                                                       # Jeżeli element jest tylko nazwą
         return name                                                                 # To zwraca jego samego
     else                                                                            # Jeśli nie
         return name[1]                                                              # Zwraca element tupli, który odpowiada nazwie
